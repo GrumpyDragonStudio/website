@@ -72,6 +72,7 @@ export default {
   font-size: 30px;
   margin-top: 20px;
   display: block;
+  padding-left: 5px;
 }
 .divider {
   background-color: #ffffff;
