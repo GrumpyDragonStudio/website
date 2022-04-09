@@ -6,11 +6,12 @@
         <a-layout-header class="header">
           <img :src="require('@/assets/icon.webp')" />
           <div class="description">A STUDIO FOCUSED ON CASUAL, HYBRID CASUAL GAMES</div>
+          <div class="feature">Creative, High-Quality, and Fun</div>
         </a-layout-header>
         <a-layout-content class="content">
           <span class="divider-title">OUR GAMES</span>
           <a-divider class="divider" />
-          <a-row>
+          <a-row justify="center">
             <a-col
               :md="24"
               :lg="12"
@@ -20,12 +21,24 @@
               v-for="(game) in games"
               :key="game.name"
             >
-              <game-card :game="game" />
+              <a-row justify="center">
+                <a-col>
+                  <game-card :game="game" />
+                </a-col>
+              </a-row>
             </a-col>
           </a-row>
         </a-layout-content>
         <a-layout-footer class="footer">
-          <span>Alpaca Games L.L.C.</span>
+          <a-row justify="center">
+            <a-col>
+              <span>Alpaca Games L.L.C.</span>
+              <a href="mailto:peterlong1014@gmail.com" class="email">Email</a>
+              <a href="https://www.linkedin.com/company/alpaca-games" class="linkedin">
+                Linked<linkedin-outlined />
+              </a>
+            </a-col>
+          </a-row>
         </a-layout-footer>
       </a-layout>
     </a-col>
@@ -34,11 +47,13 @@
 </template>
 
 <script>
+import { LinkedinOutlined } from '@ant-design/icons-vue';
 import GameCard from '@/components/GameCard.vue';
 
 export default {
   name: 'HomePage',
   components: {
+    LinkedinOutlined,
     GameCard
   },
   data() {
@@ -57,7 +72,8 @@ export default {
 .divider-title {
   color: #ffffff;
   font-size: 30px;
-  margin-top: 30px;
+  margin-top: 20px;
+  display: block;
 }
 .divider {
   background-color: #ffffff;
@@ -76,7 +92,29 @@ export default {
 }
 .description {
   width: 80%;
-  font-size: 60px;
+  font-size: 40px;
   color: #ffffff;
+}
+.feature {
+  font-size: 20px;
+  color: #ffffff;
+}
+@media screen and (max-width: 790px) {
+  .header {
+    background-size: auto 100%;
+  }
+  .description {
+    width: 100%;
+    font-size: 20px;
+  }
+  .feature {
+    font-size: 15px;
+  }
+}
+.email {
+  margin-left: 10px;
+}
+.linkedin {
+  margin-left: 10px;
 }
 </style>
