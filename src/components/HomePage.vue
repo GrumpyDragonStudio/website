@@ -33,10 +33,8 @@
           <a-row justify="center">
             <a-col>
               <span>Alpaca Games L.L.C.</span>
-              <a href="mailto:peterlong1014@gmail.com" class="email">Email</a>
-              <a href="https://www.linkedin.com/company/alpaca-games" class="linkedin">
-                Linked<linkedin-outlined />
-              </a>
+              <a :href="`mailto:${company.email}`" class="email">Email</a>
+              <a :href="company.linkedin" target="_blank" class="linkedin">Linkedin</a>
             </a-col>
           </a-row>
         </a-layout-footer>
@@ -47,17 +45,17 @@
 </template>
 
 <script>
-import { LinkedinOutlined } from '@ant-design/icons-vue';
+import { company } from "../../package.json";
 import GameCard from '@/components/GameCard.vue';
 
 export default {
   name: 'HomePage',
   components: {
-    LinkedinOutlined,
     GameCard
   },
   data() {
     return {
+      company,
       games: [
         { coverUrl: require('@/assets/number.webp'), name: 'number', title: 'Bubble Number Mix', description: 'Testing...' },
         { coverUrl: require('@/assets/jumpy.webp'), name: 'jumpy', title: 'Jumpy Bird', description: '', androidUrl: 'https://play.google.com/store/apps/details?id=com.grumpydragonstudio.jumpingbird' },
@@ -116,5 +114,6 @@ export default {
 }
 .linkedin {
   margin-left: 10px;
+  white-space: nowrap;
 }
 </style>

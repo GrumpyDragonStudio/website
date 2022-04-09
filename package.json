@@ -11,7 +11,8 @@
   "dependencies": {
     "ant-design-vue": "^3.1.1",
     "core-js": "^3.8.3",
-    "vue": "^3.2.13"
+    "vue": "^3.2.13",
+    "vue-router": "4"
   },
   "devDependencies": {
     "@ant-design/icons-vue": "^6.1.0",
@@ -44,5 +45,10 @@
     "last 2 versions",
     "not dead",
     "not ie 11"
-  ]
+  ],
+  "company": {
+    "name": "Alpaca Games",
+    "email": "peterlong1014@gmail.com",
+    "linkedin": "https://www.linkedin.com/company/alpaca-games"
+  }
 }
