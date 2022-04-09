@@ -6,17 +6,29 @@
     <a-card-meta :title="game.title">
       <template #description>
         <span v-if="showDescription(game)">{{ game.description }}</span>
-        <a-button v-if="showAndroid(game)" shape="round" type="primary">
+        <a-button
+          v-if="showAndroid(game)"
+          shape="round"
+          type="primary"
+          :href="game.androidUrl"
+          target="_blank"
+        >
           <template #icon>
             <android-outlined />
           </template>
-          Check
+          Google Play
         </a-button>
-        <a-button v-if="showIos(game)" shape="round" type="primary">
+        <a-button
+          v-if="showIos(game)"
+          shape="round"
+          type="primary"
+          :href="game.iosUrl"
+          target="_blank"
+        >
           <template #icon>
             <apple-outlined />
           </template>
-          Check
+          App Store
         </a-button>
       </template>
     </a-card-meta>
