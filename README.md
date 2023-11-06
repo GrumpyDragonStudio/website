@@ -38,5 +38,10 @@ unzip public.zip
 
 sudo rsync -rtvu --delete --exclude-from /home/liwb/uploads/sync_website_exclude.txt /home/liwb/uploads/dist/ /var/www/html/
 
+exclude example:
+```
+__MACOSX
+```
+
 dns
 301 alpacagames.us -> https://www.alpacagames.us
