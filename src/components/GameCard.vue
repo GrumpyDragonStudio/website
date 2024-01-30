@@ -60,16 +60,16 @@ export default {
 
 <style scoped>
 .card {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #000000;
   width: 365px;
 }
 </style>
 <style>
 .ant-card-meta-title {
-  color: #ffffff;
+  color: #000000;
 }
 .ant-card-meta-description {
-  color: #ffffff;
+  color: #000000;
 }
 </style>

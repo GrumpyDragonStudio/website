@@ -4,9 +4,9 @@
     <a-col :md="22" :lg="22" :xl="18" :xxl="18" :xxxl="14">
       <a-layout>
         <a-layout-header class="header">
-          <img :src="require('@/assets/icon.webp')" />
-          <div class="description">A STUDIO FOCUSED ON CASUAL, HYBRID CASUAL GAMES</div>
-          <div class="feature">Creative, High-Quality, and Fun</div>
+          <a-image :src="require('@/assets/icon.png')" :width="100" />
+            <div class="description">AMAZE THE WORLD</div>
+            <div class="feature">We're here to create a fun and wonderful gaming experience that will make you say WOW!</div>
         </a-layout-header>
         <a-layout-content class="content">
           <span class="divider-title">OUR GAMES</span>
@@ -32,7 +32,7 @@
         <a-layout-footer class="footer">
           <a-row justify="center">
             <a-col>
-              <span>Alpaca Games L.L.C.</span>
+              <span>Wow Games Ltd.</span>
               <a :href="`mailto:${company.email}`" class="email">Email</a>
               <a :href="company.linkedin" target="_blank" class="linkedin">Linkedin</a>
             </a-col>
@@ -68,7 +68,7 @@ export default {
 
 <style scoped>
 .divider-title {
-  color: #ffffff;
+  color: #000000;
   font-size: 30px;
   margin-top: 20px;
   display: block;
@@ -78,25 +78,27 @@ export default {
   background-color: #ffffff;
 }
 .header {
-  background-image: url("../assets/header.webp");
+  /* background-image: url("../assets/header.webp"); */
+  background-color: #e3d329;
   background-size: 100%;
   height: 400px;
+  border-radius: 0 0 0 200px;
 }
 .content {
-  background-color: #000000;
+  background-color: #ffffff;
 }
 .footer {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #000000;
 }
 .description {
   width: 80%;
   font-size: 40px;
-  color: #ffffff;
+  color: #000000;
 }
 .feature {
   font-size: 20px;
-  color: #ffffff;
+  color: #000000;
 }
 @media screen and (max-width: 790px) {
   .header {
