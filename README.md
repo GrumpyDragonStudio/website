@@ -34,7 +34,7 @@ www.alpacagames.us market.alpacagames.us
 
 ssh -i '/Users/liwb/workspace/alpaca/keystore/server/alpaca-website-20231106.pem' ubuntu@3.135.235.113
 
-scp -i '/Users/liwb/workspace/alpaca/keystore/server/alpacawebsite_azure.pem' ./dist.zip ubuntu@3.135.235.113:/home/ubuntu/uploads
+scp -i '/Users/liwb/workspace/alpaca/keystore/server/alpaca-website-20231106.pem' ./dist.zip ubuntu@3.135.235.113:/home/ubuntu/uploads
 
 unzip public.zip
 
