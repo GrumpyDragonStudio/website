@@ -9,13 +9,11 @@
     "inspect": "vue inspect > inspect.log"
   },
   "dependencies": {
-    "ant-design-vue": "^3.1.1",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
     "vue-router": "4"
   },
   "devDependencies": {
-    "@ant-design/icons-vue": "^6.1.0",
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
     "@vue/cli-plugin-babel": "~5.0.0",
@@ -47,8 +45,9 @@
     "not ie 11"
   ],
   "company": {
-    "name": "Alpaca Games",
-    "email": "peterlong1014@gmail.com",
-    "linkedin": "https://www.linkedin.com/company/alpaca-games"
+    "name": "Wow Games",
+    "legalName": "Wow Games Ltd.",
+    "email": "peter@wowgames.us",
+    "linkedin": "https://www.linkedin.com/company/wow-games"
   }
 }

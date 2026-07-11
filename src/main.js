@@ -1,7 +1,5 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router';
-import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
 import { company } from "../package.json";
 import App from './App.vue'
 import HomePage from './components/HomePage.vue'
@@ -14,7 +12,7 @@ const routes = [
       metaTags: [
         {
           property: 'og:description',
-          content: 'a studio focused on casual, hybrid casual games'
+          content: 'a studio focused on casual and logic puzzle games'
         }
       ]
     }
@@ -40,4 +38,4 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-createApp(App).use(router).use(Antd).mount('#app')
+createApp(App).use(router).mount('#app')

@@ -1,47 +1,38 @@
 <template>
-  <a-row>
-    <a-col :md="1" :lg="1" :xl="3" :xxl="3" :xxxl="5"></a-col>
-    <a-col :md="22" :lg="22" :xl="18" :xxl="18" :xxxl="14">
-      <a-layout>
-        <a-layout-header class="header">
-          <a-image :src="require('@/assets/icon.png')" :width="100" />
-            <div class="description">AMAZE THE WORLD</div>
-            <div class="feature">We're here to create a fun and wonderful gaming experience that will make you say WOW!</div>
-        </a-layout-header>
-        <a-layout-content class="content">
-          <span class="divider-title">OUR GAMES</span>
-          <a-divider class="divider" />
-          <a-row justify="center">
-            <a-col
-              :md="24"
-              :lg="12"
-              :xl="12"
-              :xxl="8"
-              :xxxl="8"
-              v-for="(game) in games"
-              :key="game.name"
-            >
-              <a-row justify="center">
-                <a-col>
-                  <game-card :game="game" />
-                </a-col>
-              </a-row>
-            </a-col>
-          </a-row>
-        </a-layout-content>
-        <a-layout-footer class="footer">
-          <a-row justify="center">
-            <a-col>
-              <span>Wow Games Ltd.</span>
-              <a :href="`mailto:${company.email}`" class="email">Email</a>
-              <a :href="company.linkedin" target="_blank" class="linkedin">Linkedin</a>
-            </a-col>
-          </a-row>
-        </a-layout-footer>
-      </a-layout>
-    </a-col>
-    <a-col :md="1" :lg="1" :xl="3" :xxl="3" :xxxl="5"></a-col>
-  </a-row>
+  <div class="page">
+    <header class="hero">
+      <img class="hero-logo" :src="require('@/assets/Web_TeamIcon.png')" alt="Wow Games" />
+      <h1 class="hero-title">AMAZE THE WORLD</h1>
+      <p class="hero-tagline">We're here to create a fun and wonderful gaming experience that will make you say WOW!</p>
+    </header>
+
+    <main>
+      <section class="section" id="games">
+        <h2 class="section-title">Our Games</h2>
+        <div class="game-grid">
+          <game-card v-for="game in games" :key="game.name" :game="game" />
+        </div>
+      </section>
+
+      <section class="section section-about" id="about">
+        <h2 class="section-title">About Wow Games</h2>
+        <div class="about-body">
+          <p>Wow Games is a one-person mobile game studio based in Minnesota, dedicated to casual and logic puzzle games that are easy to pick up and hard to put down. Since 2022, we've partnered with Voodoo on hypercasual game prototyping, and now self-publish our own titles on Google Play.</p>
+          <p>The studio is run by Peter Long, a game designer with a decade of experience across the Chinese and Western mobile industries, who worked on a puzzle title that surpassed 500M downloads. Every game here is designed, built, and published by one person — made possible by an AI-assisted production pipeline that lets a solo studio ship at small-team speed.</p>
+          <p>We believe that small games, carefully crafted and consistently shipped, still deserve a place on your phone.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span class="footer-brand">{{ company.legalName }}</span>
+      <nav class="footer-links">
+        <a :href="`mailto:${company.email}`">Email</a>
+        <a :href="company.linkedin" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="/privacy/wowgames.html" target="_blank">Privacy Policy</a>
+      </nav>
+    </footer>
+  </div>
 </template>
 
 <script>
@@ -57,9 +48,13 @@ export default {
     return {
       company,
       games: [
-        { coverUrl: require('@/assets/number.webp'), name: 'number', title: 'Bubble Number Mix', description: 'Testing...' },
-        { coverUrl: require('@/assets/jumpy.webp'), name: 'jumpy', title: 'Jumpy Bird', description: '', androidUrl: 'https://play.google.com/store/apps/details?id=com.grumpydragonstudio.jumpingbird' },
-        { coverUrl: require('@/assets/car.webp'), name: 'car', title: 'Pull Back Car 3D', description: '', androidUrl: 'https://play.google.com/store/apps/details?id=com.grumpydragonstudio.pullbackcar' }
+        {
+          coverUrl: require('@/assets/Web_GameIcon.png'),
+          name: 'where-are-the-cats',
+          title: 'Where are the cats: Puzzle',
+          description: 'A logic puzzle for puzzle lovers. Pure deduction, no guessing, no timers!',
+          androidUrl: 'https://play.google.com/store/apps/details?id=com.wowgames.wherearethecats'
+        }
       ]
     }
   },
@@ -67,56 +62,132 @@ export default {
 </script>
 
 <style scoped>
-.divider-title {
-  color: #000000;
-  font-size: 30px;
-  margin-top: 20px;
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #EFE7E0;
+}
+
+.hero {
+  padding: 72px 24px 40px;
+  text-align: center;
+}
+.hero-logo {
+  width: 240px;
+  max-width: 60vw;
+  height: auto;
+}
+.hero-title {
+  margin: 24px 0 12px;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 44px;
+  letter-spacing: 2px;
+  color: #2B2420;
+}
+.hero-tagline {
+  margin: 0 auto;
+  max-width: 520px;
+  font-size: 19px;
+  line-height: 1.6;
+  color: #6B5F56;
+}
+
+.section {
+  padding: 48px 24px;
+  text-align: center;
+}
+.section-title {
+  display: inline-block;
+  position: relative;
+  margin: 0 0 36px;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+  color: #2B2420;
+}
+.section-title::after {
+  content: "";
   display: block;
-  padding-left: 5px;
+  margin: 8px auto 0;
+  width: 56px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #F9B234;
 }
-.divider {
-  background-color: #ffffff;
+
+.game-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
 }
-.header {
-  /* background-image: url("../assets/header.webp"); */
-  background-color: #e3d329;
-  background-size: 100%;
-  height: 400px;
-  border-radius: 0 0 0 200px;
+
+.section-about {
+  padding-bottom: 72px;
 }
-.content {
-  background-color: #ffffff;
+.about-body {
+  margin: 0 auto;
+  max-width: 640px;
+  text-align: left;
 }
+.about-body p {
+  margin: 0 0 20px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: #4A4038;
+}
+.about-body p:last-child {
+  margin-bottom: 0;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 500;
+  color: #E85D4F;
+}
+
 .footer {
-  background-color: #ffffff;
-  color: #000000;
+  margin-top: auto;
+  padding: 28px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px 24px;
+  background-color: #2B2420;
+  color: #EFE7E0;
+  font-size: 15px;
 }
-.description {
-  width: 80%;
-  font-size: 40px;
-  color: #000000;
+.footer-brand {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 500;
 }
-.feature {
-  font-size: 20px;
-  color: #000000;
+.footer-links {
+  display: flex;
+  gap: 24px;
 }
-@media screen and (max-width: 790px) {
-  .header {
-    background-size: auto 100%;
+.footer-links a {
+  color: #EFE7E0;
+  text-decoration: none;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+.footer-links a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 600px) {
+  .hero {
+    padding-top: 48px;
   }
-  .description {
-    width: 100%;
-    font-size: 20px;
+  .hero-title {
+    font-size: 30px;
   }
-  .feature {
-    font-size: 15px;
+  .hero-tagline {
+    font-size: 16px;
   }
-}
-.email {
-  margin-left: 10px;
-}
-.linkedin {
-  margin-left: 10px;
-  white-space: nowrap;
+  .section-title {
+    font-size: 26px;
+  }
 }
 </style>

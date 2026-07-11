@@ -1,49 +1,23 @@
 # website
-Alpaca Games Website
 
-## Project setup
-```
-yarn install
-```
+Wow Games official website — https://www.wowgames.us
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+Vue 3 single-page site. Static assets that must keep their URLs (`app-ads.txt`, `privacy/*.html`) live in `public/`.
 
-### Compiles and minifies for production
+## Development
+
+Requires Node.js (yarn is used via corepack).
+
 ```
-yarn build
+corepack yarn install --ignore-engines
+corepack yarn serve        # dev server at http://localhost:8080
+corepack yarn build        # production build into dist/
 ```
 
-### Lints and fixes files
-```
-yarn lint
-```
+`--ignore-engines` is needed because an old transitive dependency declares outdated Node engine ranges.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Deployment
 
-# https
+Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds the site and publishes it to GitHub Pages (custom domain: www.wowgames.us, DNS managed at Squarespace).
 
-certbot + nginx
-
-lwbsyz@gmail.com
-
-www.alpacagames.us market.alpacagames.us
-
-ssh -i '/Users/liwb/workspace/alpaca/keystore/server/alpaca-website-20231106.pem' ubuntu@3.135.235.113
-
-scp -i '/Users/liwb/workspace/alpaca/keystore/server/alpacawebsite_azure.pem' ./dist.zip liwb@172.190.230.136:/home/liwb/uploads
-
-unzip public.zip
-
-sudo rsync -rtvu --delete --exclude-from /home/liwb/uploads/sync_website_exclude.txt /home/liwb/uploads/dist/ /var/www/html/
-
-exclude example:
-```
-__MACOSX
-```
-
-dns
-301 alpacagames.us -> https://www.alpacagames.us
+The previous Alpaca Games deployment (nginx on AWS/Azure, alpacagames.us) is retired; see git history of this README if those notes are ever needed.
