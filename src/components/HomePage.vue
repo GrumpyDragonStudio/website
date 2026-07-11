@@ -54,6 +54,34 @@ export default {
           title: 'Where are the cats: Puzzle',
           description: 'A logic puzzle for puzzle lovers. Pure deduction, no guessing, no timers!',
           androidUrl: 'https://play.google.com/store/apps/details?id=com.wowgames.wherearethecats'
+        },
+        {
+          coverUrl: require('@/assets/BrickzIcon.png'),
+          name: 'brickz',
+          title: 'Brickz',
+          description: 'Smash all the bricks and beat every level—simple and addictive!',
+          androidUrl: 'https://play.google.com/store/apps/details?id=com.wowgames.brickz'
+        },
+        {
+          coverUrl: require('@/assets/BubbleNumberMixIcon.png'),
+          name: 'bubble-number-mix',
+          title: 'Bubble Number Mix',
+          description: 'Merge all the numbers to win the game, try it now!',
+          androidUrl: 'https://play.google.com/store/apps/details?id=com.grumpydragonstudio.numbermix'
+        },
+        {
+          coverUrl: require('@/assets/DotsBlastIcon.png'),
+          name: 'dots-blast',
+          title: 'Dots Blast',
+          description: "Blast the dots and help your friend restore her grandma's house.",
+          androidUrl: 'https://play.google.com/store/apps/details?id=us.alpacagames.dotpuzzle'
+        },
+        {
+          coverUrl: require('@/assets/FlowerMatchIcon.png'),
+          name: 'flower-match',
+          title: 'FlowerMatch',
+          description: 'Match flowers in a line to win the game!',
+          androidUrl: 'https://play.google.com/store/apps/details?id=us.wowgames.flowermatch'
         }
       ]
     }
