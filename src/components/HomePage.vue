@@ -78,6 +78,16 @@ export default {
       },
       games: [
         {
+          coverUrl: require('@/assets/NumberBlastIcon.png'),
+          name: 'number-blast',
+          title: 'Number Blast: Block Puzzle',
+          description: {
+            en: 'Blocks fly UP! Rotate, drop & clear lines in this reverse gravity block puzzle.',
+            zh: '方块向上飞！旋转、投放、消除整行，体验重力反转的方块益智玩法！'
+          },
+          androidUrl: 'https://play.google.com/store/apps/details?id=com.wowgames.numberblast'
+        },
+        {
           coverUrl: require('@/assets/Web_GameIcon.png'),
           name: 'where-are-the-cats',
           title: 'Where are the cats: Puzzle',
