@@ -78,12 +78,12 @@ export default {
       },
       games: [
         {
-          coverUrl: require('@/assets/NumberBlastIcon.png'),
-          name: 'number-blast',
-          title: 'Number Blast: Block Puzzle',
+          coverUrl: require('@/assets/CubeBlastIcon.png'),
+          name: 'cube-blast',
+          title: 'Cube Blast: Block Puzzle',
           description: {
-            en: 'Blocks fly UP! Rotate, drop & clear lines in this reverse gravity block puzzle.',
-            zh: '方块向上飞！旋转、投放、消除整行，体验重力反转的方块益智玩法！'
+            en: 'Blast cubes, clear lines, chase high scores! The addictive block puzzle',
+            zh: '炸掉方块、消除整行、冲击高分！令人上瘾的方块益智游戏！'
           },
           androidUrl: 'https://play.google.com/store/apps/details?id=com.wowgames.numberblast'
         },
