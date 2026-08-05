@@ -72,8 +72,12 @@ async function main() {
     throw new Error('GPLAY_SERVICE_ACCOUNT_KEY and GPLAY_STATS_BUCKET must both be set');
   }
 
+  // Tolerate pasting the full "gs://bucket/" URI (e.g. from Play Console's
+  // "Copy Cloud Storage URI" button) instead of a bare bucket name.
+  const cleanBucketName = bucketName.trim().replace(/^gs:\/\//, '').replace(/\/+$/, '');
+
   const storage = new Storage({ credentials: JSON.parse(keyJson) });
-  const bucket = storage.bucket(bucketName);
+  const bucket = storage.bucket(cleanBucketName);
 
   let totalDownloads = 0;
   const perGame = {};
