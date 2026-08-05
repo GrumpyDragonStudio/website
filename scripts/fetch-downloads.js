@@ -17,6 +17,7 @@ const { Storage } = require('@google-cloud/storage');
 const { parse } = require('csv-parse/sync');
 
 const PACKAGE_IDS = [
+  'com.wowgames.dotsort.colorpuzzle',
   'com.wowgames.numberblast',
   'com.wowgames.wherearethecats',
   'com.wowgames.brickz',

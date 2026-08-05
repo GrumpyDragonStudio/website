@@ -85,6 +85,16 @@ export default {
       },
       games: [
         {
+          coverUrl: require('@/assets/DotSortIcon.png'),
+          name: 'dot-sort',
+          title: 'Dot Sort',
+          description: {
+            en: 'Sort colorful dots in a relaxing puzzle challenge',
+            zh: '在轻松的益智挑战中整理缤纷圆点。'
+          },
+          androidUrl: 'https://play.google.com/store/apps/details?id=com.wowgames.dotsort.colorpuzzle'
+        },
+        {
           coverUrl: require('@/assets/CubeBlastIcon.png'),
           name: 'cube-blast',
           title: 'Cube Blast: Block Puzzle',
