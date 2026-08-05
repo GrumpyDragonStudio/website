@@ -27,7 +27,7 @@ const PACKAGE_IDS = [
 ];
 
 const OUTPUT_PATH = path.join(__dirname, '..', 'public', 'downloads.json');
-const START_YEAR = parseInt(process.env.GPLAY_STATS_START_YEAR || '2022', 10);
+const SCAN_START_YEAR = parseInt(process.env.GPLAY_STATS_START_YEAR || '2022', 10);
 
 function pickInstallsColumn(header) {
   const normalized = header.map((h) => h.trim().toLowerCase());
@@ -62,7 +62,7 @@ async function sumPackageInstalls(bucket, packageId) {
   const currentYear = now.getUTCFullYear();
   const currentMonth = now.getUTCMonth() + 1;
 
-  for (let year = START_YEAR; year <= currentYear; year += 1) {
+  for (let year = SCAN_START_YEAR; year <= currentYear; year += 1) {
     const lastMonth = year === currentYear ? currentMonth : 12;
     for (let month = 1; month <= lastMonth; month += 1) {
       const yyyymm = `${year}${String(month).padStart(2, '0')}`;
@@ -73,17 +73,12 @@ async function sumPackageInstalls(bucket, packageId) {
         reportCount += 1;
         total += sumInstallsCsv(buffer);
       } catch (err) {
-        if (err.code === 404) continue;
-        if (err.code === 403) {
-          throw new Error(
-            `No permission to download ${objectName}. Confirm the service account has global Play Console access to download bulk reports.`
-          );
-        }
+        if (err.code === 403 || err.code === 404) continue;
         throw err;
       }
     }
   }
-  if (reportCount === 0) console.warn(`${packageId}: no overview install reports found since ${START_YEAR}`);
+  if (reportCount === 0) console.warn(`${packageId}: no overview install reports found since ${SCAN_START_YEAR}`);
   return { installs: total, reportCount };
 }
 
