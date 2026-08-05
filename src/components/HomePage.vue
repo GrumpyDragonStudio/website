@@ -6,6 +6,7 @@
       <img class="hero-logo" :src="require('@/assets/Web_TeamIcon.png')" alt="Wow Games" />
       <h1 class="hero-title">{{ t.heroTitle }}</h1>
       <p class="hero-tagline">{{ t.heroTagline }}</p>
+      <p v-if="downloads.total > 0" class="hero-stat">{{ formattedDownloads }} {{ t.downloadsLabel }}</p>
     </header>
 
     <main>
@@ -48,10 +49,15 @@ export default {
     return {
       company,
       lang: localStorage.getItem('lang') || 'en',
+      downloads: {
+        total: 0,
+        updatedAt: null
+      },
       ui: {
         en: {
           heroTitle: 'AMAZE THE WORLD',
           heroTagline: "We're here to create a fun and wonderful gaming experience that will make you say WOW!",
+          downloadsLabel: 'Total Downloads',
           gamesTitle: 'Our Games',
           aboutTitle: 'About Wow Games',
           aboutParagraphs: [
@@ -65,6 +71,7 @@ export default {
         zh: {
           heroTitle: '惊喜不止',
           heroTagline: '我们致力于创造好玩又简单的游戏体验，让你忍不住说声 WOW！',
+          downloadsLabel: '累计下载量',
           gamesTitle: '我们的游戏',
           aboutTitle: '关于 Wow Games',
           aboutParagraphs: [
@@ -149,6 +156,9 @@ export default {
         ...game,
         description: game.description[this.lang]
       }));
+    },
+    formattedDownloads() {
+      return this.downloads.total.toLocaleString(this.lang === 'zh' ? 'zh-CN' : 'en-US');
     }
   },
   methods: {
@@ -160,6 +170,13 @@ export default {
   },
   mounted() {
     document.documentElement.lang = this.lang === 'zh' ? 'zh-CN' : 'en';
+    fetch('/downloads.json')
+      .then(res => res.json())
+      .then(data => {
+        this.downloads.total = data.totalDownloads || 0;
+        this.downloads.updatedAt = data.updatedAt || null;
+      })
+      .catch(() => {});
   },
 }
 </script>
@@ -218,6 +235,18 @@ export default {
   font-size: 19px;
   line-height: 1.6;
   color: #6B5F56;
+}
+.hero-stat {
+  margin: 20px auto 0;
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 999px;
+  background-color: #2B2420;
+  color: #FFFFFF;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.5px;
 }
 
 .section {
