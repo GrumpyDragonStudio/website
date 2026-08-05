@@ -57,7 +57,7 @@ function sumInstallsCsv(buffer) {
 
 async function sumPackageInstalls(bucket, packageId) {
   let total = 0;
-  let foundAnyReport = false;
+  let reportCount = 0;
   const now = new Date();
   const currentYear = now.getUTCFullYear();
   const currentMonth = now.getUTCMonth() + 1;
@@ -70,7 +70,7 @@ async function sumPackageInstalls(bucket, packageId) {
 
       try {
         const [buffer] = await bucket.file(objectName).download();
-        foundAnyReport = true;
+        reportCount += 1;
         total += sumInstallsCsv(buffer);
       } catch (err) {
         if (err.code === 404) continue;
@@ -83,8 +83,8 @@ async function sumPackageInstalls(bucket, packageId) {
       }
     }
   }
-  if (!foundAnyReport) console.warn(`${packageId}: no overview install reports found since ${START_YEAR}`);
-  return total;
+  if (reportCount === 0) console.warn(`${packageId}: no overview install reports found since ${START_YEAR}`);
+  return { installs: total, reportCount };
 }
 
 async function main() {
@@ -102,12 +102,19 @@ async function main() {
   const bucket = storage.bucket(cleanBucketName);
 
   let totalDownloads = 0;
+  let totalReportCount = 0;
   const perGame = {};
   for (const packageId of PACKAGE_IDS) {
-    const installs = await sumPackageInstalls(bucket, packageId);
+    const { installs, reportCount } = await sumPackageInstalls(bucket, packageId);
     perGame[packageId] = installs;
     totalDownloads += installs;
+    totalReportCount += reportCount;
     console.log(`${packageId}: ${installs.toLocaleString()}`);
+  }
+  if (totalReportCount === 0) {
+    throw new Error(
+      `No install overview reports were found in ${cleanBucketName}. Verify GPLAY_STATS_BUCKET and the Play Console bulk reports permissions.`
+    );
   }
 
   const payload = {
