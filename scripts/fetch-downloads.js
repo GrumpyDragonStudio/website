@@ -27,6 +27,7 @@ const PACKAGE_IDS = [
 ];
 
 const OUTPUT_PATH = path.join(__dirname, '..', 'public', 'downloads.json');
+const START_YEAR = parseInt(process.env.GPLAY_STATS_START_YEAR || '2022', 10);
 
 function pickInstallsColumn(header) {
   const normalized = header.map((h) => h.trim().toLowerCase());
@@ -55,14 +56,34 @@ function sumInstallsCsv(buffer) {
 }
 
 async function sumPackageInstalls(bucket, packageId) {
-  const [files] = await bucket.getFiles({ prefix: `stats/installs/installs_${packageId}_` });
-  const overviewFiles = files.filter((f) => f.name.endsWith('_overview.csv'));
-
   let total = 0;
-  for (const file of overviewFiles) {
-    const [buffer] = await file.download();
-    total += sumInstallsCsv(buffer);
+  let foundAnyReport = false;
+  const now = new Date();
+  const currentYear = now.getUTCFullYear();
+  const currentMonth = now.getUTCMonth() + 1;
+
+  for (let year = START_YEAR; year <= currentYear; year += 1) {
+    const lastMonth = year === currentYear ? currentMonth : 12;
+    for (let month = 1; month <= lastMonth; month += 1) {
+      const yyyymm = `${year}${String(month).padStart(2, '0')}`;
+      const objectName = `stats/installs/installs_${packageId}_${yyyymm}_overview.csv`;
+
+      try {
+        const [buffer] = await bucket.file(objectName).download();
+        foundAnyReport = true;
+        total += sumInstallsCsv(buffer);
+      } catch (err) {
+        if (err.code === 404) continue;
+        if (err.code === 403) {
+          throw new Error(
+            `No permission to download ${objectName}. Confirm the service account has global Play Console access to download bulk reports.`
+          );
+        }
+        throw err;
+      }
+    }
   }
+  if (!foundAnyReport) console.warn(`${packageId}: no overview install reports found since ${START_YEAR}`);
   return total;
 }
 
