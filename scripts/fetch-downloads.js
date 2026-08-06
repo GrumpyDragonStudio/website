@@ -5,9 +5,9 @@
 //   GPLAY_SERVICE_ACCOUNT_KEY - full JSON key of a service account that has been
 //     granted the "View app information and download bulk reports" permission
 //     for the Play Console developer account, in Play Console > Users and permissions.
-//   GPLAY_STATS_BUCKET - the Cloud Storage bucket name shown on
+//   GPLAY_STATS_BUCKET - the Cloud Storage URI shown on
 //     Play Console > Download reports (the "Copy Cloud Storage URI" button),
-//     e.g. pubsite_prod_rev_0123456789012345678
+//     e.g. gs://pubsite_prod_0123456789012345678/stats/installs/
 //
 // See README section "Download counter" for full setup steps.
 
@@ -55,9 +55,23 @@ function sumInstallsCsv(buffer) {
   return total;
 }
 
-async function sumPackageInstalls(bucket, packageId) {
+function parseStatsUri(value) {
+  const clean = value.trim().replace(/^gs:\/\//, '').replace(/\/+$/, '');
+  const [bucketName, ...prefixParts] = clean.split('/');
+  const objectPrefix = prefixParts.length > 0 ? prefixParts.join('/') : 'stats/installs';
+  if (!bucketName) throw new Error('GPLAY_STATS_BUCKET must include a Cloud Storage bucket name');
+  return { bucketName, objectPrefix };
+}
+
+async function sumPackageInstalls(bucket, objectPrefix, packageId) {
   let total = 0;
   let reportCount = 0;
+  const misses = {
+    forbidden: 0,
+    notFound: 0,
+    firstForbiddenObject: null,
+    firstNotFoundObject: null,
+  };
   const now = new Date();
   const currentYear = now.getUTCFullYear();
   const currentMonth = now.getUTCMonth() + 1;
@@ -66,49 +80,68 @@ async function sumPackageInstalls(bucket, packageId) {
     const lastMonth = year === currentYear ? currentMonth : 12;
     for (let month = 1; month <= lastMonth; month += 1) {
       const yyyymm = `${year}${String(month).padStart(2, '0')}`;
-      const objectName = `stats/installs/installs_${packageId}_${yyyymm}_overview.csv`;
+      const objectName = `${objectPrefix}/installs_${packageId}_${yyyymm}_overview.csv`;
 
       try {
         const [buffer] = await bucket.file(objectName).download();
         reportCount += 1;
         total += sumInstallsCsv(buffer);
       } catch (err) {
-        if (err.code === 403 || err.code === 404) continue;
+        if (err.code === 403) {
+          misses.forbidden += 1;
+          if (!misses.firstForbiddenObject) misses.firstForbiddenObject = objectName;
+          continue;
+        }
+        if (err.code === 404) {
+          misses.notFound += 1;
+          if (!misses.firstNotFoundObject) misses.firstNotFoundObject = objectName;
+          continue;
+        }
         throw err;
       }
     }
   }
-  if (reportCount === 0) console.warn(`${packageId}: no overview install reports found since ${SCAN_START_YEAR}`);
-  return { installs: total, reportCount };
+  if (reportCount === 0) {
+    console.warn(
+      `${packageId}: no overview install reports found since ${SCAN_START_YEAR} ` +
+        `(403: ${misses.forbidden}, 404: ${misses.notFound})`
+    );
+    if (misses.firstForbiddenObject) console.warn(`${packageId}: first 403 object: ${misses.firstForbiddenObject}`);
+    if (misses.firstNotFoundObject) console.warn(`${packageId}: first 404 object: ${misses.firstNotFoundObject}`);
+  }
+  return { installs: total, reportCount, misses };
 }
 
 async function main() {
   const keyJson = process.env.GPLAY_SERVICE_ACCOUNT_KEY;
-  const bucketName = process.env.GPLAY_STATS_BUCKET;
-  if (!keyJson || !bucketName) {
+  const statsUri = process.env.GPLAY_STATS_BUCKET;
+  if (!keyJson || !statsUri) {
     throw new Error('GPLAY_SERVICE_ACCOUNT_KEY and GPLAY_STATS_BUCKET must both be set');
   }
 
-  // Tolerate pasting the full "gs://bucket/" URI (e.g. from Play Console's
-  // "Copy Cloud Storage URI" button) instead of a bare bucket name.
-  const cleanBucketName = bucketName.trim().replace(/^gs:\/\//, '').replace(/\/+$/, '');
+  const { bucketName, objectPrefix } = parseStatsUri(statsUri);
 
   const storage = new Storage({ credentials: JSON.parse(keyJson) });
-  const bucket = storage.bucket(cleanBucketName);
+  const bucket = storage.bucket(bucketName);
 
   let totalDownloads = 0;
   let totalReportCount = 0;
+  const totalMisses = { forbidden: 0, notFound: 0 };
   const perGame = {};
   for (const packageId of PACKAGE_IDS) {
-    const { installs, reportCount } = await sumPackageInstalls(bucket, packageId);
+    const { installs, reportCount, misses } = await sumPackageInstalls(bucket, objectPrefix, packageId);
     perGame[packageId] = installs;
     totalDownloads += installs;
     totalReportCount += reportCount;
+    totalMisses.forbidden += misses.forbidden;
+    totalMisses.notFound += misses.notFound;
     console.log(`${packageId}: ${installs.toLocaleString()}`);
   }
   if (totalReportCount === 0) {
     throw new Error(
-      `No install overview reports were found in ${cleanBucketName}. Verify GPLAY_STATS_BUCKET and the Play Console bulk reports permissions.`
+      `No install overview reports were found in gs://${bucketName}/${objectPrefix}. ` +
+        `Checked monthly overview objects since ${SCAN_START_YEAR}; got ${totalMisses.forbidden} forbidden and ${totalMisses.notFound} not found responses. ` +
+        'Verify GPLAY_STATS_BUCKET and the Play Console bulk reports permissions.'
     );
   }
 
