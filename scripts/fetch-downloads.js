@@ -28,6 +28,7 @@ const PACKAGE_IDS = [
 
 const OUTPUT_PATH = path.join(__dirname, '..', 'public', 'downloads.json');
 const SCAN_START_YEAR = parseInt(process.env.GPLAY_STATS_START_YEAR || '2022', 10);
+const STORAGE_READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/devstorage.read_only';
 
 function pickInstallsColumn(header) {
   const normalized = header.map((h) => h.trim().toLowerCase());
@@ -121,7 +122,10 @@ async function main() {
 
   const { bucketName, objectPrefix } = parseStatsUri(statsUri);
 
-  const storage = new Storage({ credentials: JSON.parse(keyJson) });
+  const storage = new Storage({
+    credentials: JSON.parse(keyJson),
+    scopes: [STORAGE_READ_ONLY_SCOPE],
+  });
   const bucket = storage.bucket(bucketName);
 
   let totalDownloads = 0;
