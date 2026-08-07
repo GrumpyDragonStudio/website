@@ -6,7 +6,10 @@
       <img class="hero-logo" :src="require('@/assets/Web_TeamIcon.png')" alt="Wow Games" />
       <h1 class="hero-title">{{ t.heroTitle }}</h1>
       <p class="hero-tagline">{{ t.heroTagline }}</p>
-      <p v-if="downloads.total > 0" class="hero-stat">{{ formattedDownloads }} {{ t.downloadsLabel }}</p>
+      <div v-if="downloads.total > 0" class="hero-stat">
+        <span class="hero-stat-number">{{ formattedDownloads }}</span>
+        <span class="hero-stat-label">{{ t.downloadsLabel }}</span>
+      </div>
     </header>
 
     <main>
@@ -247,16 +250,27 @@ export default {
   color: #6B5F56;
 }
 .hero-stat {
-  margin: 20px auto 0;
-  display: inline-block;
-  padding: 8px 20px;
-  border-radius: 999px;
-  background-color: #2B2420;
-  color: #FFFFFF;
+  margin: 28px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.hero-stat-number {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 52px;
+  line-height: 1;
+  color: #F9B234;
+  text-shadow: 2px 2px 0 #2B2420;
+}
+.hero-stat-label {
   font-family: 'Fredoka', sans-serif;
   font-weight: 600;
-  font-size: 16px;
-  letter-spacing: 0.5px;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #6B5F56;
 }
 
 .section {
@@ -356,6 +370,9 @@ export default {
   }
   .hero-tagline {
     font-size: 16px;
+  }
+  .hero-stat-number {
+    font-size: 38px;
   }
   .section-title {
     font-size: 26px;
