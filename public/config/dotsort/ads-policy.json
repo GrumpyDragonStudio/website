@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
-  "revision": "dotsort-remote-invalid-23h",
-  "interstitialEnabled": false,
-  "rewardedEnabled": false,
-  "interstitialAfterHours": 23,
+  "revision": "dotsort-remote-v3",
+  "interstitialEnabled": true,
+  "rewardedEnabled": true,
+  "interstitialAfterHours": 24,
   "secondsBetweenInterstitials": 60,
   "skipInterstitialAfterRewarded": true
 }
