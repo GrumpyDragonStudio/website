@@ -820,3 +820,6 @@ rubiconproject.com,18364,RESELLER,0bfd66d529a55807
 
 #indexexchange
 indexexchange.com,216408,RESELLER,50b1c356f2c5c8fc
+
+#Liftoff Monetize (Vungle) - Dot Sort
+vungle.com, 6840ecb3c72df000112c69d6, DIRECT, c107d686becd2d77
